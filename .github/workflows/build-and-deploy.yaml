@@ -1,0 +1,42 @@
+name: Deploy Alias
+
+on:
+  push:
+    branches:
+    - 'firebase'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: code checkout
+      uses: actions/checkout@v2
+
+    - name: install the gcloud cli
+      uses: google-github-actions/setup-gcloud@v0
+      with:
+        project_id: ${{ secrets.GOOGLE_PROJECT }}
+        service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+        install_components: 'gke-gcloud-auth-plugin'
+        export_default_credentials: true
+
+    - name: build and push the docker image
+      env:
+        GOOGLE_REGION: ${{ secrets.GOOGLE_REGION }}
+        GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+      run: |
+        gcloud auth configure-docker $GOOGLE_REGION-docker.pkg.dev
+        docker build -f ./Dockerfile.server -t $GOOGLE_REGION-docker.pkg.dev/$GOOGLE_PROJECT/alias/game:latest .
+        docker push $GOOGLE_REGION-docker.pkg.dev/$GOOGLE_PROJECT/alias/game:latest
+
+    # - name: deploy to gke
+    #   env:
+    #     GOOGLE_REGION: ${{ secrets.GOOGLE_REGION }}
+    #     GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+    #   run: |
+    ###   gcloud run deploy SERVICE --image $GOOGLE_REGION-docker.pkg.dev/$GOOGLE_PROJECT/alias/game:latest
+    #     gcloud container clusters get-credentials autopilot-cluster-1 --region $GOOGLE_REGION
+    #     sed -i "s/GOOGLE_REGION/$GOOGLE_REGION/g" resources.yaml
+    #     sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" resources.yaml
+    #     kubectl apply -f resources.yaml

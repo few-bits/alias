@@ -1,2 +1,4 @@
 **/dist
 **/dockerignore
+**/*.yaml
+**/*.yml
