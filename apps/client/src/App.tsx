@@ -36,9 +36,6 @@ import type {
 import { soundManager } from './utils/soundManager';
 import './index.css';
 
-// --- Types & Constants ---
-// type Screen = "login" | "lobby" | "preround" | "play" | "victory";
-
 // --- Helper Components ---
 const AccentButton = ({ onClick, children, disabled, className = '' }: any) => (
   <button
