@@ -39,4 +39,7 @@ jobs:
       env:
         GOOGLE_REGION: ${{ secrets.GOOGLE_REGION }}
         GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
-      run: gcloud run deploy SERVICE --image $GOOGLE_REGION-docker.pkg.dev/$GOOGLE_PROJECT/alias/game:latest
+      run: |
+        echo $GOOGLE_REGION
+        echo $GOOGLE_PROJECT
+        gcloud run deploy SERVICE --image $GOOGLE_REGION-docker.pkg.dev/$GOOGLE_PROJECT/alias/game:latest
