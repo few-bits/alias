@@ -42,4 +42,4 @@ jobs:
       run: |
         echo $GOOGLE_REGION
         echo $GOOGLE_PROJECT
-        gcloud run deploy SERVICE --image $GOOGLE_REGION-docker.pkg.dev/$GOOGLE_PROJECT/alias/game:latest
+        gcloud run deploy game --image $GOOGLE_REGION-docker.pkg.dev/$GOOGLE_PROJECT/alias/game:latest
