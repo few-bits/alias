@@ -35,13 +35,8 @@ jobs:
         docker build -f ./Dockerfile.server -t $GOOGLE_REGION-docker.pkg.dev/$GOOGLE_PROJECT/alias/game:latest .
         docker push $GOOGLE_REGION-docker.pkg.dev/$GOOGLE_PROJECT/alias/game:latest
 
-    # - name: deploy to gke
-    #   env:
-    #     GOOGLE_REGION: ${{ secrets.GOOGLE_REGION }}
-    #     GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
-    #   run: |
-    ###   gcloud run deploy SERVICE --image $GOOGLE_REGION-docker.pkg.dev/$GOOGLE_PROJECT/alias/game:latest
-    #     gcloud container clusters get-credentials autopilot-cluster-1 --region $GOOGLE_REGION
-    #     sed -i "s/GOOGLE_REGION/$GOOGLE_REGION/g" resources.yaml
-    #     sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" resources.yaml
-    #     kubectl apply -f resources.yaml
+    - name: deploy to Cloud Run
+      env:
+        GOOGLE_REGION: ${{ secrets.GOOGLE_REGION }}
+        GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+      run: gcloud run deploy SERVICE --image $GOOGLE_REGION-docker.pkg.dev/$GOOGLE_PROJECT/alias/game:latest
