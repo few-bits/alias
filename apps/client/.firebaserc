@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "agile-coral-481711-a1"
+  },
+  "hosting": {
+    "rewrites": [ {
+      "source": "/socket.io",
+      "run": {
+        "serviceId": "game",
+        "region": "europe-north1"
+      }
+    } ]
   }
 }
